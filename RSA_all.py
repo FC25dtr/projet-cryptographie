@@ -115,19 +115,19 @@ def RSA(): #utilisation de toutes les fonctions
 
 def envoyer_message():
     with open("cle_pub") as f:
-        n = int(f.readline().strip())
+        n = int(f.readline().strip()) #recupere dans le fichier la cle 
         e = int(f.readline().strip())
-    cle_pub = (n,e)
-    message = input("Entrez un message : ")
+    cle_pub = (n,e) # la place dans un tuple 
+    message = input("Entrez un message : ") #choix du message 
     print("Message original :", message)
-    blocs_chiffres = chiffrement_blocs(cle_pub, message)
+    blocs_chiffres = chiffrement_blocs(cle_pub, message) #dechiffre à l'aide de la fonction 
     print("Message chiffré :", blocs_chiffres)
     return blocs_chiffres
     
 def recevoir_message(blocs_chiffres):
     with open("cle_priv") as f:
-        n = int(f.readline().strip())
+        n = int(f.readline().strip()) #recupere dans le fichier la cle 
         d = int(f.readline().strip())
-    cle_priv = (n,d)
-    message_dechiffre = dechiffrement_blocs(cle_priv, blocs_chiffres)
+    cle_priv = (n,d) # place la cle prive 
+    message_dechiffre = dechiffrement_blocs(cle_priv, blocs_chiffres) #dechiffre le message avec la fonction 
     print("Message déchiffré :", message_dechiffre)
