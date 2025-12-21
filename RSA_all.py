@@ -11,9 +11,9 @@ def miller_rabbin(n,k): #teste si un rand nombre est premier avec k testes
     for i in range(k): #pour effectuer exacteement k testes
         a = random.randrange(2,n-2) #genere aleatoire pour le teste
         x = math_utile.Exponentiation(a,d,n)  #puissance modulaire
-        if x == 1 or x == n-1: # #teste 1 validé si 
+        if x == 1 or x == n-1: # #teste 1 validé si 
             continue
-        for j in range(s-1): # je cntinue les testes 
+        for j in range(s-1): # je cntinue les testes 
             x = (x*x)% n
             if x == n-1:
                 break
@@ -36,7 +36,7 @@ def gencle_RSA(): #je genere les cle RSA
         print("restart")
         return None
     n = p * q #je definie n
-    id_euler = (p-1)*(q-1) # je trouve phi de n
+    id_euler = (p-1)*(q-1) # je trouve phi de n
     e = random.randint(1,id_euler)
     while math_utile.pgcd(id_euler,e) != 1: #recherche d'un e qui possede un inverse modulaire avec phi
         e = random.randint(1,id_euler)
@@ -53,17 +53,40 @@ def message_vers_entier(message):
     m = 0
     for c in message:
         m = m * 256 + ord(c)  # décale le bloc et ajoute le nouveau caractère
-    return m
+    return m #pour executer ou non
 
-def chiffrement(cle_publique,m):
-    n,e = cle_publique
-    chiffre = math_utile.Exponentiation(m, e, n) #formule de conversion avec RSA
-    return chiffre
+def taille_max_bloc(n):
+    k = 0
+    puissance = 1
+    while puissance * 256 < n:
+        puissance *= 256 #tant que la puissance est inferieur a n ej rajoute 1 au max 
+        k += 1
+    return k
 
-def dechiffrement(cle_prive,m):
-    n,d = cle_prive
-    dechiffre = math_utile.Exponentiation(m, d, n) #formule de dechiffrement avec RSA
-    return dechiffre
+def message_en_blocs(message, n):
+    bloc_taille = taille_max_bloc(n) #je definie la taille max 
+    blocs = []
+    for i in range(0, len(message), bloc_taille): # je saute de bloc en bloque
+        bloc = message[i:i + bloc_taille] #tout ceux qu'il y a entre
+        blocs.append(message_vers_entier(bloc)) # je creer le codage bloc par bloc 
+    return blocs
+
+def chiffrement_blocs(cle_publique, message):
+    n, e = cle_publique 
+    blocs = message_en_blocs(message, n)
+    blocs_chiffres = [] #j'initialise la liste des pluesieurs blocs
+    for bloc in blocs:
+        chiffre = math_utile.Exponentiation(bloc, e, n)
+        blocs_chiffres.append(chiffre) #dechiffrement total des blocs
+    return blocs_chiffres
+
+def dechiffrement_blocs(cle_privee, blocs_chiffres):
+    n, d = cle_privee
+    message = ""
+    for bloc_chiffre in blocs_chiffres:
+        bloc = math_utile.Exponentiation(bloc_chiffre, d, n)
+        message += entier_vers_texte(bloc) #dechiffrement total des blocs
+    return message #retour du message total
 
 
 def entier_vers_texte(m):
@@ -73,18 +96,21 @@ def entier_vers_texte(m):
         caracteres.append(chr(code))
         m = m // 256 # avancer vers le caractère précédent
     caracteres.reverse() # inverser la liste pour retrouver l'ordre original
-    return caracteres
+    return "".join(caracteres)
 
-def RSA(): #fonction qui enchaine toutes les etapes pour veriier le fonctionnement 
-    a,b = gencle_RSA()
-    print(a,b)
-    message = message_vers_entier("salut : ")
-    print("message sous forme d'entier : ",message)
-    crypte = chiffrement(a, message)
-    print("message apres cryptage : ",crypte)
-    decrypte = dechiffrement(b, crypte)
-    print("message apres decryptage : " ,decrypte)
-    final = entier_vers_texte(decrypte)
-    return "message final : ",final
+def RSA(): #utilisation de toutes les fonctions
+    cle_pub, cle_priv = gencle_RSA()
+    print("Clés publiques :", cle_pub)
+    print("Clés privées :", cle_priv)
+    message = input("Entrez un message : ")
+    print("Message original :", message)
+    # Chiffrement
+    blocs_chiffres = chiffrement_blocs(cle_pub, message)
+    print("Message chiffré :", blocs_chiffres)
+    # Déchiffrement
+    message_dechiffre = dechiffrement_blocs(cle_priv, blocs_chiffres)
+    print("Message déchiffré :", message_dechiffre)
+    return message_dechiffre 
 
-print(RSA())
+final = RSA()
+print(final)
