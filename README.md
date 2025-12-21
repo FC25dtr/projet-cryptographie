@@ -26,13 +26,42 @@ Pour l’instant, le projet inclut :
    - Implémentation de **Miller-Rabin** pour vérifier que les nombres générés sont premiers.
 
 ---
+## Fonctionnalités
 
-## Fonctionnement actuel
+### 1. Génération des clés
 
-- L’utilisateur peut **entrer un message texte**, qui est converti en entier.
-- Les clés RSA peuvent être générées automatiquement.
-- Le message est **chiffré avec la clé publique** et **déchiffré avec la clé privée** pour récupérer le texte original.
-- Le projet gère **des messages de longueur variable** grâce à la conversion en blocs d’octets.
+- `gencle_RSA()` : génère un couple de clés `(clé_publique, clé_privée)`  
+- `clé_publique = (n, e)`  
+- `clé_privée = (n, d)`  
+- Les clés peuvent être sauvegardées dans des fichiers pour un usage ultérieur.  
+
+### 2. Conversion texte ↔ entier
+
+- `message_vers_entier(message)` : convertit un bloc de texte en entier  
+- `entier_vers_texte(entier)` : convertit un entier en bloc de texte  
+
+### 3. Chiffrement / déchiffrement par blocs
+
+- `chiffrement_blocs(cle_publique, message)` : chiffre un message de longueur arbitraire en découpant en blocs compatibles avec `n`  
+- `dechiffrement_blocs(cle_privee, blocs_chiffres)` : déchiffre chaque bloc et reconstitue le message complet  
+
+### 4. Fonctions interactives
+
+#### Envoyer un message
+
+- `envoyer_message_depuis_fichier()` :  
+  - Lit la clé publique depuis `cle_publique.txt`  
+  - Demande à l’utilisateur d’entrer le message  
+  - Chiffre le message par blocs  
+  - Retourne la liste des blocs chiffrés  
+
+#### Recevoir un message
+
+- `recevoir_message(blocs_chiffres)` :  
+  - Lit la clé privée depuis `cle_priv.txt`  
+  - Déchiffre chaque bloc  
+  - Reconstitue le message texte  
+  - Affiche le message déchiffré  
 
 ---
 
@@ -40,17 +69,9 @@ Pour l’instant, le projet inclut :
 
 Dans les prochaines versions, le projet prévoit :
 
-1. **Gestion des messages très longs**
-   - Découpage en blocs si l’entier du message dépasse `n`.
-   - Réassemblage des blocs après déchiffrement.
-
 2. **Signature numérique**
    - Signer un message avec la clé privée.
    - Vérifier la signature avec la clé publique.
-
-3. **Optimisations**
-   - Améliorer la génération de nombres premiers pour plus de rapidité.
-   - Optimiser le chiffrement/déchiffrement pour des blocs plus grands.
 
 ## Notes
 
