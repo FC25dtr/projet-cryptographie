@@ -46,7 +46,7 @@ def gencle_RSA(): #je genere les cle RSA
         return None
     cle_pub = (n,e) #je cree les cles publique et privé 
     cle_priv = (n,d)
-    return cle_pub,cle_priv
+    return cle_pub,cle_priv,n
     
     
 def message_vers_entier(message):
@@ -99,7 +99,7 @@ def entier_vers_texte(m):
     return "".join(caracteres)
 
 def RSA(): #utilisation de toutes les fonctions
-    cle_pub, cle_priv = gencle_RSA()
+    cle_pub, cle_priv,n = gencle_RSA()
     print("Clés publiques :", cle_pub)
     print("Clés privées :", cle_priv)
     message = input("Entrez un message : ")
@@ -110,7 +110,24 @@ def RSA(): #utilisation de toutes les fonctions
     # Déchiffrement
     message_dechiffre = dechiffrement_blocs(cle_priv, blocs_chiffres)
     print("Message déchiffré :", message_dechiffre)
-    return message_dechiffre 
+    print("la taille est : ",n)
+    return message_dechiffre
 
-final = RSA()
-print(final)
+def envoyer_message():
+    with open("cle_pub") as f:
+        n = int(f.readline().strip())
+        e = int(f.readline().strip())
+    cle_pub = (n,e)
+    message = input("Entrez un message : ")
+    print("Message original :", message)
+    blocs_chiffres = chiffrement_blocs(cle_pub, message)
+    print("Message chiffré :", blocs_chiffres)
+    return blocs_chiffres
+    
+def recevoir_message(blocs_chiffres):
+    with open("cle_priv") as f:
+        n = int(f.readline().strip())
+        d = int(f.readline().strip())
+    cle_priv = (n,d)
+    message_dechiffre = dechiffrement_blocs(cle_priv, blocs_chiffres)
+    print("Message déchiffré :", message_dechiffre)
