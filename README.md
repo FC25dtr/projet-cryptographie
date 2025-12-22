@@ -76,4 +76,4 @@ Dans les prochaines versions, le projet prévoit :
 ## Notes
 
 - Le projet est **en développement**, mais la base du chiffrement et du déchiffrement fonctionne.
-- Les améliorations futures permettront un système RSA **complet et robuste**, avec signature numérique et gestion des messages longs.
+- rajout de 
