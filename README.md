@@ -69,9 +69,12 @@ Pour l’instant, le projet inclut :
 
 Dans les prochaines versions, le projet prévoit :
 
-2. **Signature numérique**
+**Signature numérique**
    - Signer un message avec la clé privée.
    - Vérifier la signature avec la clé publique.
+
+**server chat**
+   -creation d'un server chat basé avec du chiffrement RSA (en cours mais avec des erreurs, il reste beaucoup de travail)
 
 ## Notes
 
