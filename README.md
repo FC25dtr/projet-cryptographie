@@ -74,7 +74,7 @@ Dans les prochaines versions, le projet prévoit :
    - Vérifier la signature avec la clé publique.
 
 **server chat**
-   -creation d'un server chat basé avec du chiffrement RSA (en cours mais avec des erreurs, il reste beaucoup de travail)
+   - creation d'un server chat basé avec du chiffrement RSA (en cours mais avec des erreurs, il reste beaucoup de travail)
 
 ## Notes
 
