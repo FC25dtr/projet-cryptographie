@@ -27,7 +27,7 @@ def gencle_RSA(): #je genere les cle RSA
     i = 0
     L = []
     while i < 2:
-        a = random.randint(1,2**512) #genere un entier sur max 512 bits 
+        a = random.randint(2**511,2**512-1) #genere un entier sur max 512 bits 
         if miller_rabbin(a, 7): #teste la primalite 
             i += 1
             L += [a]
